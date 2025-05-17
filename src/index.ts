@@ -1,7 +1,7 @@
-import { splitEvery, maxBy, reduce, pipe, curry } from "ramda";
-import { type Pixel, loadImage } from "./loading";
 import styles from "ansi-styles";
-import { type Array2D, subDivide, map as map2D } from "./array2d";
+import { pipe, splitEvery } from "ramda";
+import { type Array2D, map as map2D, subDivide } from "./array2d";
+import { type Pixel, loadImage } from "./loading";
 
 const print2d = <T>(arr: Array2D<T>) => {
   const height = arr.data.length / arr.width;
@@ -11,7 +11,7 @@ const print2d = <T>(arr: Array2D<T>) => {
 
   if (arr.width > terminalWidth || height > terminalHeight) {
     console.warn(
-      "Dimensions being printed are greater than available terminal"
+      "Dimensions being printed are greater than available terminal",
     );
   }
 
@@ -38,11 +38,11 @@ const bwOneByTwo = (data: Array2D<Pixel>) => {
 const colorOneByTwo = (data: Array2D<Pixel>) => {
   const fg = styles.color.ansi(
     // biome-ignore lint/style/noNonNullAssertion: reason
-    styles.rgbToAnsi(data.data[0]!.r, data.data[0]!.g, data.data[0]!.b)
+    styles.rgbToAnsi(data.data[0]!.r, data.data[0]!.g, data.data[0]!.b),
   );
   const bg = styles.bgColor.ansi(
     // biome-ignore lint/style/noNonNullAssertion: reason
-    styles.rgbToAnsi(data.data[1]!.r, data.data[1]!.g, data.data[1]!.b)
+    styles.rgbToAnsi(data.data[1]!.r, data.data[1]!.g, data.data[1]!.b),
   );
 
   // Uses a "Upper Half Block" character

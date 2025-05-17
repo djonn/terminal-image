@@ -1,6 +1,6 @@
 import * as PNG from "png-js";
 import { splitEvery } from "ramda";
-import { type Array2D } from "./array2d";
+import type { Array2D } from "./array2d";
 
 export type Pixel = {
   r: number;

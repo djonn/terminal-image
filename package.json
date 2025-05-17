@@ -5,8 +5,10 @@
 	"private": true,
 	"scripts": {
 		"dev": "bun run src/index.ts",
+		"check": "biome check",
+		"check:fix": "biome check --write",
 		"lint": "biome lint",
-		"lint:fix": "biome lint",
+		"lint:fix": "biome lint --write",
 		"format": "biome format --write"
 	},
 	"devDependencies": {

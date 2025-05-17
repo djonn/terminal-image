@@ -1,9 +1,9 @@
+import Array2D from "./array2d";
 import { loadImage, perlinNoise } from "./loading";
-import { averageColor } from "./mapping/average-color";
 import { braille } from "./mapping/braille";
 import { ditheringFn } from "./mapping/dithering";
 import { bwOneByTwo, colorOneByTwo } from "./mapping/one-by-two";
-import { BLACK_WHITE_PALETTE, findClosestColor, rgb } from "./pixel";
+import { findClosestColor, rgb } from "./pixel";
 import { print2d } from "./print";
 
 // -----------------------------
@@ -69,6 +69,20 @@ const printPerlinNoise = async () => {
   print2d(mapped);
 };
 
+const printColorMixedPerlinNoise = async () => {
+  const mapped = Array2D.zip(
+    perlinNoise(90, 90, 5),
+    perlinNoise(90, 90, 10),
+    perlinNoise(90, 90, 15),
+  )
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+    .map((x) => rgb(x[0]!, x[1]!, x[2]!))
+    .split(1, 2)
+    .map(colorOneByTwo);
+
+  print2d(mapped);
+};
+
 // -------------------------------
 
-await printPerlinNoise();
+await printColorMixedPerlinNoise();

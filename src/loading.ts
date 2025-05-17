@@ -33,13 +33,17 @@ export const loadImage = (url: string): Promise<Array2D<Pixel>> => {
   });
 };
 
-export const perlinNoise = (width: number, height: number): Array2D<number> => {
+export const perlinNoise = (
+  width: number,
+  height: number,
+  scaling = 10,
+): Array2D<number> => {
   const noise = new SimplexNoise();
   const data = Array(width * height)
     .fill(undefined)
     .map((_, i) => {
       const [x, y] = Array2D.reverseIndex(i, { width } as Array2D<unknown>);
-      return Math.round((noise.noise(x / 10, y / 10) + 1) * 128);
+      return Math.round((noise.noise(x / scaling, y / scaling) + 1) * 128);
     });
 
   return Array2D.new(width, height, data);

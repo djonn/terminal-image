@@ -25,6 +25,23 @@ export default class Array2D<T> {
     return [i % arr.width, Math.floor(i / arr.width)];
   }
 
+  static zip<T>(...args: Array2D<T>[]): Array2D<T[]> {
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+    const { width, height } = args[0]!;
+    if (!args.every((x) => x.width === width && x.height === height)) {
+      throw new Error("Dimensions of all arguments must match");
+    }
+
+    const data = Array(width * height)
+      .fill(undefined)
+      .map((_, i) => {
+        const [x, y] = Array2D.reverseIndex(i, { width } as Array2D<unknown>);
+        return args.map((arr) => arr.get(x, y));
+      });
+
+    return Array2D.new(width, height, data);
+  }
+
   /**
    * Returns 1D array index for a 2D array
    */
@@ -39,7 +56,7 @@ export default class Array2D<T> {
     return Array2D.reverseIndex(i, this);
   }
 
-  get(x: number, y: number): Readonly<T> {
+  get(x: number, y: number): T {
     if (x >= this.width || y >= this.height) {
       throw new Error("Array2D does not contain the specified index");
     }

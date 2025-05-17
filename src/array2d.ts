@@ -14,11 +14,7 @@ export default class Array2D<T> {
   }
 
   static empty<T>(width: number, height: number, defaultValue: T): Array2D<T> {
-    return new Array2D(
-      width,
-      height,
-      Array(width * height).map(() => defaultValue),
-    );
+    return new Array2D(width, height, Array(width * height).fill(defaultValue));
   }
 
   static index<T>(x: number, y: number, arr: Array2D<T>): number {
@@ -44,10 +40,11 @@ export default class Array2D<T> {
   }
 
   get(x: number, y: number): Readonly<T> {
-    const result = this.data[this.index(x, y)];
-    if (typeof result === "undefined") {
+    if (x >= this.width || y >= this.height) {
       throw new Error("Array2D does not contain the specified index");
     }
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+    const result = this.data[this.index(x, y)]!;
     return result;
   }
 

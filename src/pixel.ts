@@ -45,6 +45,26 @@ export const normalize = (pixel: Pixel): Pixel => {
   ) as Pixel;
 };
 
+export const findClosestColor = (pixel: Pixel, palette: Pixel[]): Pixel => {
+  const euclideanDistance = (a: Pixel, b: Pixel) => {
+    const redPart = (a.r - b.r) ** 2;
+    const greenPart = (a.g - b.g) ** 2;
+    const bluePart = (a.b - b.b) ** 2;
+
+    return Math.sqrt(redPart + greenPart + bluePart);
+  };
+
+  return palette
+    .map((p): [Pixel, number] => [p, euclideanDistance(pixel, p)])
+    .reduce(
+      (acc, cur) => {
+        if (typeof acc === "undefined") return cur;
+        return acc[1] <= cur[1] ? acc : cur;
+      },
+      [rgb(255, 255, 255), 10000],
+    )[0];
+};
+
 export const XTERM_COLOR_PALETTE = [
   rgb(0, 0, 0),
   rgb(128, 0, 0),

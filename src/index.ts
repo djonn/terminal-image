@@ -1,7 +1,9 @@
-import { loadImage } from "./loading";
+import { loadImage, perlinNoise } from "./loading";
+import { averageColor } from "./mapping/average-color";
 import { braille } from "./mapping/braille";
 import { ditheringFn } from "./mapping/dithering";
 import { bwOneByTwo, colorOneByTwo } from "./mapping/one-by-two";
+import { BLACK_WHITE_PALETTE, findClosestColor, rgb } from "./pixel";
 import { print2d } from "./print";
 
 // -----------------------------
@@ -30,6 +32,43 @@ const printDitheredCat = async () => {
   print2d(mapped);
 };
 
+const printPerlinNoise = async () => {
+  const mapped = perlinNoise(90, 90)
+    .map((noise) => {
+      const color = rgb(noise, noise, noise);
+      return findClosestColor(color, [
+        rgb(8, 8, 8),
+        rgb(18, 18, 18),
+        rgb(28, 28, 28),
+        rgb(38, 38, 38),
+        rgb(48, 48, 48),
+        rgb(58, 58, 58),
+        rgb(68, 68, 68),
+        rgb(78, 78, 78),
+        rgb(88, 88, 88),
+        rgb(98, 98, 98),
+        rgb(108, 108, 108),
+        rgb(118, 118, 118),
+        rgb(128, 128, 128),
+        rgb(138, 138, 138),
+        rgb(148, 148, 148),
+        rgb(158, 158, 158),
+        rgb(168, 168, 168),
+        rgb(178, 178, 178),
+        rgb(188, 188, 188),
+        rgb(198, 198, 198),
+        rgb(208, 208, 208),
+        rgb(218, 218, 218),
+        rgb(228, 228, 228),
+        rgb(238, 238, 238),
+      ]);
+    })
+    .split(1, 2)
+    .map(colorOneByTwo);
+
+  print2d(mapped);
+};
+
 // -------------------------------
 
-await printDitheredCat();
+await printPerlinNoise();

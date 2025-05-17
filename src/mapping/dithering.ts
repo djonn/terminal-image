@@ -22,6 +22,8 @@ export const ditheringFn = (palette: Pixel[] = XTERM_COLOR_PALETTE) => {
 
 /**
  * Dithered using the Floyd-Steinberg algorithm
+ * 
+ * Note: this function modifies `array`
  *
  * @param arr 2d array of any dimension
  * @returns 2d array with each cell containing one braile character

@@ -26,7 +26,7 @@ const printFrierenInBraille = async () => {
 
 const printDitheredCat = async () => {
   const image = await loadImage("img/90x90-dandelion.png");
-  const mapped = image.map(ditheringFn()).split(1, 2).map(colorOneByTwo);
+  const mapped = image.copy().map(ditheringFn()).split(1, 2).map(colorOneByTwo);
   print2d(mapped);
 };
 

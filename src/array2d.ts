@@ -43,7 +43,7 @@ export default class Array2D<T> {
     return Array2D.reverseIndex(i, this);
   }
 
-  get(x: number, y: number): T {
+  get(x: number, y: number): Readonly<T> {
     const result = this.data[this.index(x, y)];
     if (typeof result === "undefined") {
       throw new Error("Array2D does not contain the specified index");
@@ -56,6 +56,13 @@ export default class Array2D<T> {
       throw new Error("Cannot set value for index outside dimensions");
     }
     this.data[this.index(x, y)] = value;
+  }
+
+  /**
+   * Returns shallow copy of the input array
+   */
+  copy(): Array2D<T> {
+    return Array2D.new<T>(this.width, this.height, [...this.data]);
   }
 
   /**

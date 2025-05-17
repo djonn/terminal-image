@@ -1,6 +1,7 @@
 import { splitEvery, maxBy, reduce } from "ramda";
-import { type Image, type Pixel, getPixel, loadImage } from "./loading";
+import { type Image, type Pixel, loadImage } from "./loading";
 import styles from "ansi-styles";
+import { type Array2D, subDivide } from "./array2d";
 
 // const IMAGE_URL = "img/20x20-black-circle.png";
 // const IMAGE_URL = "img/2x2-rgb.png";
@@ -8,21 +9,20 @@ import styles from "ansi-styles";
 // const IMAGE_URL = "img/170x90-cat.png";
 const IMAGE_URL = "img/192x192-frieren.png";
 
-const print2d = <T>(array: T[], width: number, fn: (x: T) => string) => {
-  const height = array.length / width;
+const print2d = <T>(arr: Array2D<T>, fn: (x: T) => string) => {
+  const height = arr.data.length / arr.width;
 
   const terminalWidth = process.stdout.columns;
   const terminalHeight = process.stdout.rows;
 
-  if (width > terminalWidth || height > terminalHeight) {
+  if (arr.width > terminalWidth || height > terminalHeight) {
     console.warn(
       "Dimensions being printed are greater than available terminal",
-      { width, height },
     );
   }
 
-  const line = array.map(fn);
-  const chart = splitEvery(width, line);
+  const line = arr.data.map(fn);
+  const chart = splitEvery(arr.width, line);
   const text = chart.map((x) => x.join("")).join("\n");
   console.log(text);
 };
@@ -31,7 +31,7 @@ const printImage_1x1Pixel = (
   image: Image,
   pixelFn: (pixel: Pixel) => string,
 ) => {
-  print2d(image.pixels, image.width, pixelFn);
+  print2d(image, pixelFn);
 };
 
 const averageLightness = ({ r, g, b, a }: Pixel): string =>
@@ -56,47 +56,10 @@ const dominantColor = (pixel: Pixel): string => {
 // -----------------------------
 
 const printImage_1x2Pixel = (
-  image: [Pixel, Pixel][],
-  width: number,
+  image: Array2D<[Pixel, Pixel]>,
   fn: (pixel: [Pixel, Pixel]) => string,
 ) => {
-  print2d(image, width, fn);
-};
-
-const subDivide = (image: Image, sW: number, sH: number) => {
-  // original -> o
-  // segment  -> s
-  // result   -> r
-
-  const { width: oW, height: oH } = image;
-
-  if (oW % sW !== 0 || oH % sH !== 0) {
-    console.warn(
-      "The image size is not perfectly divisible by the segment size. Some of the image will be cut",
-    );
-  }
-
-  const rW = Math.floor(oW / sW);
-  const rH = Math.floor(oH / sH);
-
-  const result = [];
-  for (let i = 0; i < rW * rH; i++) {
-    const rX = i % rW;
-    const rY = Math.floor(i / rW);
-
-    const oX = rX * sW;
-    const oY = rY * sH;
-
-    const segment: Pixel[] = [];
-    for (let sX = oX; sX < oX + sW; sX++) {
-      for (let sY = oY; sY < oY + sH; sY++) {
-        const pixel = getPixel(image, sX, sY);
-        segment.push(pixel);
-      }
-    }
-    result.push(segment);
-  }
-  return result;
+  print2d(image, fn);
 };
 
 const bwOneByTwo = (data: [Pixel, Pixel]) => {
@@ -121,25 +84,25 @@ const colorOneByTwo = (data: [Pixel, Pixel]) => {
 
 // -------------------------------
 
-const braille = (data: Pixel[]): string => {
+const braille = (arr: Array2D<Pixel>): string => {
   // The dots on unicode braille is numbered transposed in relation to how we do it
   // 0 4
   // 1 5
   // 2 6
   // 3 7
   const transposedData = [
-    data[0],
-    data[4],
-    data[1],
-    data[5],
-    data[2],
-    data[6],
-    data[3],
-    data[7],
-  ];
+    arr.data[0],
+    arr.data[4],
+    arr.data[1],
+    arr.data[5],
+    arr.data[2],
+    arr.data[6],
+    arr.data[3],
+    arr.data[7],
+  ] as Pixel[];
 
   const isWhite = ({ r, g, b }: Pixel) => (r + g + b / 3 > 128 ? "0" : "1");
-  const binaryString = data.map(isWhite).join("");
+  const binaryString = transposedData.map(isWhite).join("");
 
   // U+2800 Braille Pattern Blank
   // This is the first character in the list of 256 braille symbols
@@ -159,4 +122,4 @@ const image = await loadImage(IMAGE_URL);
 // printImage_1x2Pixel(subDivided as [Pixel, Pixel][], image.width, colorOneByTwo);
 
 const subDivided = subDivide(image, 2, 4);
-print2d(subDivided, image.width / 2, braille);
+print2d(subDivided, braille);

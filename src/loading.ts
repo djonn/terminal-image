@@ -1,11 +1,8 @@
 import * as PNG from "png-js";
 import { splitEvery } from "ramda";
+import { type Array2D } from "./array2d";
 
-export type Image = {
-  width: number;
-  height: number;
-  pixels: Pixel[];
-};
+export type Image = Array2D<Pixel>;
 
 export type Pixel = {
   r: number;
@@ -39,19 +36,10 @@ export const loadImage = (url: string): Promise<Image> => {
       const image: Image = {
         width,
         height,
-        pixels: pixels,
+        data: pixels,
       };
 
       resolve(image);
     });
   });
-};
-
-export const getPixel = (image: Image, x: number, y: number): Pixel => {
-  const result = image.pixels[x + y * image.width];
-
-  if (result === undefined)
-    throw new RangeError(`Pixel at (${x}, ${y}) does not exist.`);
-
-  return result;
 };

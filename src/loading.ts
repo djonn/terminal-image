@@ -1,13 +1,7 @@
 import PNG from "png-js";
 import { splitEvery } from "ramda";
 import Array2D from "./array2d";
-
-export type Pixel = {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-};
+import type { Pixel } from "./pixel";
 
 export const loadImage = (url: string): Promise<Array2D<Pixel>> => {
   return new Promise((resolve, reject) => {

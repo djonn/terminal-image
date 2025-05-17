@@ -1,5 +1,5 @@
 import type Array2D from "../array2d";
-import type { Pixel } from "../loading";
+import type { Pixel } from "../pixel";
 
 /**
  * @param arr 2d array with dimensions of 2x4

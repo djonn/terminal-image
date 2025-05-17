@@ -1,5 +1,6 @@
 import { loadImage } from "./loading";
 import { braille } from "./mapping/braille";
+import { ditheringFn } from "./mapping/dithering";
 import { bwOneByTwo, colorOneByTwo } from "./mapping/one-by-two";
 import { print2d } from "./print";
 
@@ -23,6 +24,12 @@ const printFrierenInBraille = async () => {
   print2d(mapped);
 };
 
+const printDitheredCat = async () => {
+  const image = await loadImage("img/90x90-dandelion.png");
+  const mapped = image.map(ditheringFn()).split(1, 2).map(colorOneByTwo);
+  print2d(mapped);
+};
+
 // -------------------------------
 
-await printFrierenInBraille();
+await printDitheredCat();

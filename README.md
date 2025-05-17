@@ -15,3 +15,9 @@ To run:
 ```bash
 bun dev
 ```
+
+## Examples
+
+![Image of a cat printed in a terminal](assets/sample-cat.png)
+
+![Image of a Frieren the slayer printed using braille characters in a terminal](assets/sample-frieren.png)

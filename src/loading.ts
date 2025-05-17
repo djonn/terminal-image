@@ -1,6 +1,6 @@
-import * as PNG from "png-js";
+import PNG from "png-js";
 import { splitEvery } from "ramda";
-import type { Array2D } from "./array2d";
+import Array2D from "./array2d";
 
 export type Pixel = {
   r: number;
@@ -31,11 +31,7 @@ export const loadImage = (url: string): Promise<Array2D<Pixel>> => {
         return pixel;
       });
 
-      const image: Array2D<Pixel> = {
-        width,
-        height,
-        data: pixels,
-      };
+      const image = Array2D.new(width, height, pixels);
 
       resolve(image);
     });

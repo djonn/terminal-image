@@ -1,6 +1,6 @@
 import styles from "ansi-styles";
 import { pipe, splitEvery } from "ramda";
-import { type Array2D, map as map2D, subDivide } from "./array2d";
+import type Array2D from "./array2d";
 import { type Pixel, loadImage } from "./loading";
 
 const print2d = <T>(arr: Array2D<T>) => {
@@ -83,23 +83,20 @@ const braille = (arr: Array2D<Pixel>): string => {
 
 const printDoublePrecisionBWCircle = async () => {
   const image = await loadImage("img/20x20-black-circle.png");
-  const subDivided = subDivide(1, 2, image);
-  const mapped = map2D(bwOneByTwo, subDivided);
+  const mapped = image.split(1, 2).map(bwOneByTwo);
   print2d(mapped);
 };
 
 const printDoublePrecisionColorCat = async () => {
   const image = await loadImage("img/170x90-cat.png");
-  const subDivided = subDivide(1, 2, image);
-  const mapped = map2D(colorOneByTwo, subDivided);
+  const mapped = image.split(1, 2).map(colorOneByTwo);
   print2d(mapped);
 };
 
 const printFrierenInBraille = async () => {
   const image = await loadImage("img/192x192-frieren.png");
-  const subDivide2x4 = <T>(arr: Array2D<T>) => subDivide(2, 4, arr);
-  const mapToBraille = <T>(arr: Array2D<Array2D<Pixel>>) => map2D(braille, arr);
-  pipe(subDivide2x4<Pixel>, mapToBraille, print2d)(image);
+  const mapped = image.split(2, 4).map(braille);
+  print2d(mapped);
 };
 
 // -------------------------------

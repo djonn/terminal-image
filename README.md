@@ -10,10 +10,16 @@ To install dependencies:
 bun install
 ```
 
-To run:
+To list available experiments:
 
 ```bash
 bun dev
+```
+
+To run an experiment:
+
+```bash
+bun run src/experiments/double-precision-cat.ts
 ```
 
 ## Examples

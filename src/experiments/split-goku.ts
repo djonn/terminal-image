@@ -1,3 +1,11 @@
+/**
+ * @file
+ *
+ * This experiment takes the input image and maps in two different ways,
+ * one using braille characters and one using color and then merges them
+ * together again.
+ */
+
 import { wrap } from "../ansi-styling";
 import Array2D from "../array2d";
 import { loadImage } from "../loading";

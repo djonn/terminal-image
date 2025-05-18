@@ -3,11 +3,11 @@
  *
  * This experiment introduces 2D splines to map numbers
  */
-import { createInterpolator } from "commons-math-interpolation";
-import { perlinNoise } from "../loading";
 import { findClosestColor, rgb } from "../pixel";
 import { colorOneByTwo } from "../mapping/one-by-two";
 import { print2d } from "../print";
+import { normalizePoints, splineFn } from "../mapping/spline";
+import { perlinNoise } from "../perlin";
 
 const GRAY_PALETTE = [
   rgb(8, 8, 8),
@@ -35,14 +35,6 @@ const GRAY_PALETTE = [
   rgb(228, 228, 228),
   rgb(238, 238, 238),
 ];
-
-const splineFn = (
-  xVals: number[],
-  yVals: number[],
-): ((x: number) => number) => {
-  // Akima seems to be good at handling points close to each other
-  return createInterpolator("akima", xVals, yVals);
-};
 
 const printWithMinecraftSpline = () => {
   // continentalness
@@ -74,20 +66,6 @@ const printWithMinecraftSpline = () => {
 };
 
 const printWithMiddleSpline = () => {
-  const normalizePoints = (points: [number, number][]): [number, number][] => {
-    const xVals = points.map(([x, _]) => x);
-    const xMax = Math.max(...xVals);
-    const xMin = Math.min(...xVals);
-    const xRange = xMax - xMin;
-
-    const yVals = points.map(([y, _]) => y);
-    const yMax = Math.max(...yVals);
-    const yMin = Math.min(...yVals);
-    const yRange = yMax - yMin;
-
-    return points.map(([x, y]) => [(x - xMin) / xRange, (y - yMin) / yRange]);
-  };
-
   // Create spline using https://www.source-code.biz/snippets/typescript/functionCurveEditor/
   // press "k" to copy the points
   const mySplinePoints = normalizePoints([

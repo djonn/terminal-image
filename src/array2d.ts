@@ -25,6 +25,7 @@ export default class Array2D<T> {
     return [i % arr.width, Math.floor(i / arr.width)];
   }
 
+  // Additional type declarations means each input array does not need to have same type
   static zip<T1, T2>(...args: [Array2D<T1>, Array2D<T2>]): Array2D<[T1, T2]>;
   static zip<T1, T2, T3>(
     ...args: [Array2D<T1>, Array2D<T2>, Array2D<T3>]

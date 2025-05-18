@@ -25,6 +25,14 @@ export default class Array2D<T> {
     return [i % arr.width, Math.floor(i / arr.width)];
   }
 
+  static zip<T1, T2>(...args: [Array2D<T1>, Array2D<T2>]): Array2D<[T1, T2]>;
+  static zip<T1, T2, T3>(
+    ...args: [Array2D<T1>, Array2D<T2>, Array2D<T3>]
+  ): Array2D<[T1, T2, T3]>;
+  static zip<T1, T2, T3, T4>(
+    ...args: [Array2D<T1>, Array2D<T2>, Array2D<T3>, Array2D<T4>]
+  ): Array2D<[T1, T2, T3, T4]>;
+
   static zip<T>(...args: Array2D<T>[]): Array2D<T[]> {
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     const { width, height } = args[0]!;

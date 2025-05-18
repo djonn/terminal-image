@@ -75,8 +75,7 @@ const printColorMixedPerlinNoise = async () => {
     perlinNoise(90, 90, 10),
     perlinNoise(90, 90, 15),
   )
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    .map((x) => rgb(x[0]!, x[1]!, x[2]!))
+    .map((x) => rgb(x[0], x[1], x[2]))
     .split(1, 2)
     .map(colorOneByTwo);
 

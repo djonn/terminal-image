@@ -33,6 +33,7 @@ export default class Array2D<T> {
   static zip<T1, T2, T3, T4>(
     ...args: [Array2D<T1>, Array2D<T2>, Array2D<T3>, Array2D<T4>]
   ): Array2D<[T1, T2, T3, T4]>;
+  static zip<T>(...args: Array2D<T>[]): Array2D<T[]>;
 
   static zip<T>(...args: Array2D<T>[]): Array2D<T[]> {
     // biome-ignore lint/style/noNonNullAssertion: <explanation>

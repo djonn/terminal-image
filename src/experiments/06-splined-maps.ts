@@ -1,13 +1,13 @@
+import { colorOneByTwo } from "../mapping/one-by-two";
+import { normalizePoints, splineFn } from "../mapping/spline";
+import { perlinNoise } from "../perlin";
 /**
  * @file
  *
  * This experiment introduces 2D splines to map numbers
  */
 import { findClosestColor, rgb } from "../pixel";
-import { colorOneByTwo } from "../mapping/one-by-two";
 import { print2d } from "../print";
-import { normalizePoints, splineFn } from "../mapping/spline";
-import { perlinNoise } from "../perlin";
 
 const GRAY_PALETTE = [
   rgb(8, 8, 8),

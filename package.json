@@ -25,6 +25,7 @@
 		"commons-math-interpolation": "^2.2.3",
 		"perlin-simplex": "^0.0.3",
 		"png-js": "^1.0.0",
-		"ramda": "^0.30.1"
+		"ramda": "^0.30.1",
+		"seedrandom": "^3.0.5"
 	}
 }

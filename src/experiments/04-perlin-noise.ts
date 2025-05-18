@@ -8,8 +8,8 @@
  */
 
 import Array2D from "../array2d";
-import { perlinNoise } from "../loading";
 import { colorOneByTwo } from "../mapping/one-by-two";
+import { perlinNoise } from "../perlin";
 import { findClosestColor, rgb } from "../pixel";
 import { print2d } from "../print";
 
@@ -55,9 +55,9 @@ const printPerlinNoise = async () => {
 
 const printColorMixedPerlinNoise = async () => {
   const mapped = Array2D.zip(
-    perlinNoise(90, 90, 5),
-    perlinNoise(90, 90, 10),
-    perlinNoise(90, 90, 15),
+    perlinNoise(90, 90, { initialFrequency: 50 }),
+    perlinNoise(90, 90, { initialFrequency: 65 }),
+    perlinNoise(90, 90, { initialFrequency: 80 }),
   )
     .map((x) =>
       rgb(
@@ -72,8 +72,24 @@ const printColorMixedPerlinNoise = async () => {
   print2d(mapped);
 };
 
+const printPerlinNoiseWithOctaves = async () => {
+  const mapped = perlinNoise(90, 90, { initialFrequency: 35, octaves: 3 })
+    .map((noise) => {
+      const scaledNoise = Math.round(128 + noise * 128);
+      const color = rgb(scaledNoise, scaledNoise, scaledNoise);
+      return findClosestColor(color, GRAY_PALETTE);
+    })
+    .split(1, 2)
+    .map(colorOneByTwo);
+
+  print2d(mapped);
+};
+
 console.log("Grayscale:");
 printPerlinNoise();
 
 console.log("\nColor channels:");
 printColorMixedPerlinNoise();
+
+console.log("\n3 Octaves:");
+printPerlinNoiseWithOctaves();

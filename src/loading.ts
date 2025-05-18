@@ -1,4 +1,3 @@
-import SimplexNoise from "perlin-simplex";
 import PNG from "png-js";
 import { splitEvery } from "ramda";
 import Array2D from "./array2d";
@@ -31,23 +30,4 @@ export const loadImage = (url: string): Promise<Array2D<Pixel>> => {
       resolve(image);
     });
   });
-};
-
-/**
- * Creates 2d array with values between -1 and 1
- */
-export const perlinNoise = (
-  width: number,
-  height: number,
-  scaling = 10,
-): Array2D<number> => {
-  const noise = new SimplexNoise();
-  const data = Array(width * height)
-    .fill(undefined)
-    .map((_, i) => {
-      const [x, y] = Array2D.reverseIndex(i, { width } as Array2D<unknown>);
-      return noise.noise(x / scaling, y / scaling);
-    });
-
-  return Array2D.new(width, height, data);
 };

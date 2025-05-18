@@ -43,7 +43,8 @@ const GRAY_PALETTE = [
 const printPerlinNoise = async () => {
   const mapped = perlinNoise(90, 90)
     .map((noise) => {
-      const color = rgb(noise, noise, noise);
+      const scaledNoise = Math.round(128 + noise * 128);
+      const color = rgb(scaledNoise, scaledNoise, scaledNoise);
       return findClosestColor(color, GRAY_PALETTE);
     })
     .split(1, 2)
@@ -58,7 +59,13 @@ const printColorMixedPerlinNoise = async () => {
     perlinNoise(90, 90, 10),
     perlinNoise(90, 90, 15),
   )
-    .map((x) => rgb(x[0], x[1], x[2]))
+    .map((x) =>
+      rgb(
+        Math.round(128 + x[0] * 128),
+        Math.round(128 + x[1] * 128),
+        Math.round(128 + x[2] * 128),
+      ),
+    )
     .split(1, 2)
     .map(colorOneByTwo);
 

@@ -33,6 +33,9 @@ export const loadImage = (url: string): Promise<Array2D<Pixel>> => {
   });
 };
 
+/**
+ * Creates 2d array with values between -1 and 1
+ */
 export const perlinNoise = (
   width: number,
   height: number,
@@ -43,7 +46,7 @@ export const perlinNoise = (
     .fill(undefined)
     .map((_, i) => {
       const [x, y] = Array2D.reverseIndex(i, { width } as Array2D<unknown>);
-      return Math.round((noise.noise(x / scaling, y / scaling) + 1) * 128);
+      return noise.noise(x / scaling, y / scaling);
     });
 
   return Array2D.new(width, height, data);

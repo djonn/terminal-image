@@ -7,6 +7,7 @@
         "@types/ansi-styles": "^4.2.4",
         "@types/ramda": "^0.30.2",
         "ansi-styles": "^6.2.1",
+        "commons-math-interpolation": "^2.2.3",
         "perlin-simplex": "^0.0.3",
         "png-js": "^1.0.0",
         "ramda": "^0.30.1",
@@ -50,6 +51,8 @@
     "ansi-styles": ["ansi-styles@6.2.1", "", {}, "sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug=="],
 
     "bun-types": ["bun-types@1.2.13", "", { "dependencies": { "@types/node": "*" } }, "sha512-rRjA1T6n7wto4gxhAO/ErZEtOXyEZEmnIHQfl0Dt1QQSB4QV0iP6BZ9/YB5fZaHFQ2dwHFrmPaRQ9GGMX01k9Q=="],
+
+    "commons-math-interpolation": ["commons-math-interpolation@2.2.3", "", {}, "sha512-+Nf9fskgGSVpHaD8LSipHacaHbj7n66g2uaqL8JEqDfyHRxoDwEsLDBXtJxMV0Dk86KhXcdkt9BbLDG0DHVmAA=="],
 
     "perlin-simplex": ["perlin-simplex@0.0.3", "", {}, "sha512-fhLYrvCVxYlvStYUCZ2z0pWkrJX+PcfRvtTRbvegN3GxIEiOPmBbFFr0Uk2MJxqmjVrgnHuFQBcmyDQJ/kMp/w=="],
 

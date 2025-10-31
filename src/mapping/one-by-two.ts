@@ -17,13 +17,13 @@ export const bwOneByTwo = (data: Array2D<Pixel>) => {
 export const colorOneByTwo = (data: Array2D<Pixel>) => {
   const fg = styles.color.ansi256(
     // biome-ignore lint/style/noNonNullAssertion: reason
-    styles.rgbToAnsi256(data.data[0]!.r, data.data[0]!.g, data.data[0]!.b),
+    styles.rgbToAnsi256(data.data[1]!.r, data.data[1]!.g, data.data[1]!.b),
   );
   const bg = styles.bgColor.ansi256(
     // biome-ignore lint/style/noNonNullAssertion: reason
-    styles.rgbToAnsi256(data.data[1]!.r, data.data[1]!.g, data.data[1]!.b),
+    styles.rgbToAnsi256(data.data[0]!.r, data.data[0]!.g, data.data[0]!.b),
   );
 
-  // Uses a "Upper Half Block" character
-  return `${fg}${bg}▀${styles.reset.close}`;
+  // Uses a "Lower Half Block" character
+  return `${fg}${bg}▄${styles.reset.close}`;
 };

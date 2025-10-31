@@ -53,7 +53,7 @@ const printWithMinecraftSpline = () => {
 
   const minecraftSpline = splineFn(xVals, yVals);
 
-  const image = perlinNoise(90, 90, 35)
+  const image = perlinNoise(90, 90, { initialFrequency: 35 })
     .map(minecraftSpline)
     .map((noise) => {
       const color = rgb(noise, noise, noise);
@@ -80,7 +80,7 @@ const printWithMiddleSpline = () => {
     mySplinePoints.map(([y, _]) => y).map((y) => y * 200 + 55),
   );
 
-  const image = perlinNoise(90, 90, 35)
+  const image = perlinNoise(90, 90, { initialFrequency: 35 })
     .map(mySpline)
     .map((noise) => {
       const color = rgb(noise, noise, noise);

@@ -32,9 +32,10 @@ export const perlinNoise = (
     initialFrequency?: number;
     octaves?: number;
     seed?: number;
-  } = {},
+  },
 ): Array2D<number> => {
-  const { initialFrequency = 25, octaves = 1, seed = 1234 } = config;
+  const defaultConfig = { initialFrequency: 25, octaves: 1, seed: 1234 };
+  const { initialFrequency, octaves, seed } = { ...defaultConfig, ...config };
 
   const noiseLayers = range(0, octaves).map((i) =>
     perlinNoiseLayer(width, height, initialFrequency * 2 ** i, `${seed}_${i}`),

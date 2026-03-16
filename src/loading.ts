@@ -8,9 +8,10 @@ export const loadImage = (url: string): Promise<Array2D<Pixel>> => {
     const rawImage = PNG.load(url);
     const { width, height } = rawImage;
 
-    rawImage.decode((buffer: number[]) => {
-      const pixels = chunk(buffer, 4).map((foo) => {
-        const [r, g, b, a] = foo;
+    rawImage.decode((buffer: Buffer<ArrayBufferLike>) => {
+      const bufferValues = [...buffer];
+      const pixels = chunk(bufferValues, 4).map((pixelValue) => {
+        const [r, g, b, a] = pixelValue;
 
         if (
           r === undefined ||

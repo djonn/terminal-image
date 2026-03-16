@@ -1,6 +1,6 @@
 import PNG from "png-js";
-import { splitEvery } from "ramda";
 import Array2D from "./array2d";
+import { chunk } from "./arrayUtils";
 import type { Pixel } from "./pixel";
 
 export const loadImage = (url: string): Promise<Array2D<Pixel>> => {
@@ -9,7 +9,7 @@ export const loadImage = (url: string): Promise<Array2D<Pixel>> => {
     const { width, height } = rawImage;
 
     rawImage.decode((buffer: number[]) => {
-      const pixels = splitEvery(4, buffer).map((foo) => {
+      const pixels = chunk(buffer, 4).map((foo) => {
         const [r, g, b, a] = foo;
 
         if (

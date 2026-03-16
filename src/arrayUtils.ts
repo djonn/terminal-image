@@ -28,3 +28,8 @@ export const zip = <T>(...arr: T[][]): T[][] => {
 // https://stackoverflow.com/a/37129103
 export const intersperse = <T>(arr: T[], sep: T) =>
   arr.reduce((a, v) => a.concat([v, sep]), [] as T[]).slice(0, -1);
+
+export const range = (start: number, end: number): number[] =>
+  Array(end - start)
+    .fill(undefined)
+    .map((_, i) => start + i);

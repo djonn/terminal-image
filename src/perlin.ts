@@ -1,7 +1,7 @@
 import SimplexNoise from "perlin-simplex";
-import { range } from "ramda";
 import { alea } from "seedrandom";
 import Array2D from "./array2d";
+import { range } from "./arrayUtils";
 
 const perlinNoiseLayer = (
   width: number,

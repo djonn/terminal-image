@@ -1,5 +1,5 @@
-import { splitEvery } from "ramda";
 import type Array2D from "./array2d";
+import { chunk } from "./arrayUtils";
 
 export const print2d = <T>(arr: Array2D<T>) => {
   const height = arr.data.length / arr.width;
@@ -14,7 +14,7 @@ export const print2d = <T>(arr: Array2D<T>) => {
   }
 
   const line = arr.data;
-  const chart = splitEvery(arr.width, line);
+  const chart = chunk(line, arr.width);
   const text = chart.map((x) => x.join("")).join("\n");
   console.log(text);
 };

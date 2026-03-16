@@ -78,6 +78,33 @@ export default class Array2D<T> {
     return Array2D.new(resultWidth, height, resultData);
   }
 
+  static joinVertical<T>(...args: Array2D<T>[]): Array2D<T> {
+    const first = args[0];
+
+    if (!first) {
+      throw new Error("At least one array must be provided");
+    }
+
+    const width = first.width;
+
+    if (!args.every((x) => x.width === width)) {
+      throw new Error(
+        "Arrays must have the same width to be joined vertically",
+      );
+    }
+
+    const resultHeight = args.reduce((sum, arr) => sum + arr.height, 0);
+    const resultData = args.flatMap((arr) => arr.data);
+
+    return Array2D.new(width, resultHeight, resultData);
+  }
+
+  static join<T>(segments: Array2D<Array2D<T>>): Array2D<T> {
+    const byRows = chunk(segments.data, segments.width);
+    const rowsJoined = byRows.map((row) => Array2D.joinHorizontal(...row));
+    return Array2D.joinVertical(...rowsJoined);
+  }
+
   /**
    * Returns 1D array index for a 2D array
    */

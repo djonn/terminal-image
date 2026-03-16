@@ -1,3 +1,5 @@
+import { chunk, zip } from "./arrayUtils";
+
 export default class Array2D<T> {
   width: number;
   height: number;
@@ -50,6 +52,30 @@ export default class Array2D<T> {
       });
 
     return Array2D.new(width, height, data);
+  }
+
+  static joinHorizontal<T>(...args: Array2D<T>[]): Array2D<T> {
+    const first = args[0];
+
+    if (!first) {
+      throw new Error("At least one array must be provided");
+    }
+
+    const height = first.height;
+
+    if (!args.every((x) => x.height === height)) {
+      throw new Error(
+        "Arrays must have the same height to be joined horizontally",
+      );
+    }
+
+    const byRows = args.map((arr) => chunk(arr.data, arr.width));
+    const resultData = zip(...byRows)
+      .flat()
+      .flat();
+    const resultWidth = args.reduce((sum, arr) => sum + arr.width, 0);
+
+    return Array2D.new(resultWidth, height, resultData);
   }
 
   /**

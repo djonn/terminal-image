@@ -57,7 +57,6 @@ const result = fontImage(message, getLetter);
 
 print2d(
   result
-    // biome-ignore lint/style/noNonNullAssertion: reason
     .map((x) => (x ? BLACK_WHITE_PALETTE[0]! : BLACK_WHITE_PALETTE[1]!))
     .split(2, 2)
     .map(bwTwoByTwo),

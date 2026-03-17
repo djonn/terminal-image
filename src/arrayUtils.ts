@@ -17,12 +17,9 @@ export const zip = <T>(...arr: T[][]): T[][] => {
     throw new Error("All arrays must have the same length");
   }
 
-  return (
-    Array(first.length)
-      .fill(undefined)
-      // biome-ignore lint/style/noNonNullAssertion: All arrays have been checked to have same length
-      .map((_, i) => arr.map((a) => a[i]!))
-  );
+  return Array(first.length)
+    .fill(undefined)
+    .map((_, i) => arr.map((a) => a[i]!));
 };
 
 // https://stackoverflow.com/a/37129103

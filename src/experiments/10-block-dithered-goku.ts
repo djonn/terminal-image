@@ -23,7 +23,6 @@ const image = await loadImage("img/340x192-goku.png");
 const mapped = image
   // prevent streching
   .split(1, 2)
-  // biome-ignore lint/style/noNonNullAssertion: reason
   .map(({ data }) => data[0]!)
   // block dithering
   .split(2, 2)

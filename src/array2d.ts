@@ -38,7 +38,6 @@ export default class Array2D<T> {
   static zip<T>(...args: Array2D<T>[]): Array2D<T[]>;
 
   static zip<T>(...args: Array2D<T>[]): Array2D<T[]> {
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
     const { width, height } = args[0]!;
     if (!args.every((x) => x.width === width && x.height === height)) {
       throw new Error("Dimensions of all arguments must match");
@@ -123,7 +122,7 @@ export default class Array2D<T> {
     if (x >= this.width || y >= this.height) {
       throw new Error("Array2D does not contain the specified index");
     }
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+
     const result = this.data[this.index(x, y)]!;
     return result;
   }

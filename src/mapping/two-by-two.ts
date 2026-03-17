@@ -6,13 +6,9 @@ import { type Pixel, isSameColor } from "../pixel";
 export const bwTwoByTwo = (data: Array2D<Pixel>) => {
   const isWhite = ({ r, g, b }: Pixel) => r + g + b / 3 > 128;
 
-  // biome-ignore lint/style/noNonNullAssertion: reason
   const ul = isWhite(data.data[0]!);
-  // biome-ignore lint/style/noNonNullAssertion: reason
   const ur = isWhite(data.data[1]!);
-  // biome-ignore lint/style/noNonNullAssertion: reason
   const ll = isWhite(data.data[2]!);
-  // biome-ignore lint/style/noNonNullAssertion: reason
   const lr = isWhite(data.data[3]!);
 
   const char = block(ul, ur, ll, lr);
@@ -36,7 +32,6 @@ export const colorTwoByTwo = (data: Array2D<Pixel>) => {
   if (colors.length === 1) {
     // Both colors are the same, so just print a full block with that color
     const fg = styles.color.ansi256(
-      // biome-ignore lint/style/noNonNullAssertion: reason
       styles.rgbToAnsi256(colors[0]!.r, colors[0]!.g, colors[0]!.b),
     );
     return `${fg}█${styles.reset.close}`;
@@ -44,24 +39,18 @@ export const colorTwoByTwo = (data: Array2D<Pixel>) => {
 
   // there are 2 colors
 
-  // biome-ignore lint/style/noNonNullAssertion: reason
   const ul = isSameColor(data.data[0]!, colors[0]!);
-  // biome-ignore lint/style/noNonNullAssertion: reason
   const ur = isSameColor(data.data[1]!, colors[0]!);
-  // biome-ignore lint/style/noNonNullAssertion: reason
   const ll = isSameColor(data.data[2]!, colors[0]!);
-  // biome-ignore lint/style/noNonNullAssertion: reason
   const lr = isSameColor(data.data[3]!, colors[0]!);
 
   const char = block(ul, ur, ll, lr);
 
   const fg = styles.color.ansi256(
-    // biome-ignore lint/style/noNonNullAssertion: reason
     styles.rgbToAnsi256(colors[0]!.r, colors[0]!.g, colors[0]!.b),
   );
 
   const bg = styles.bgColor.ansi256(
-    // biome-ignore lint/style/noNonNullAssertion: reason
     styles.rgbToAnsi256(colors[1]!.r, colors[1]!.g, colors[1]!.b),
   );
 

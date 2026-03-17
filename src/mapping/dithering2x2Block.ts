@@ -29,7 +29,8 @@ export const dithering2x2BlockFn = (palette: Pixel[]) => {
 /**
  * Dithered using the Floyd-Steinberg algorithm
  *
- * Inspired by "3.5 Block error diffusion"
+ * Inspired by "3.5. Block error diffusion" and
+ * "3.6. Sub-block error diffusion"
  * http://caca.zoy.org/study/part3.html
  */
 const _dithering2x2Block = (
@@ -40,22 +41,20 @@ const _dithering2x2Block = (
 ): Array2D<Pixel> => {
   // find best match for 2 colors
   let newBlock: Array2D<Pixel> = oldBlock;
-  let smallestError = rgb(0, 0, 0);
+  let smallestError = [rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0)];
   let smallestErrorDistance = Number.POSITIVE_INFINITY;
 
   for (const combination of palette) {
     const newData = oldBlock.data.map((pixel) =>
       findClosestColor(pixel, combination),
     );
-    const error = (zip(oldBlock.data, newData) as [Pixel, Pixel][]).reduce(
-      (acc, [oldPixel, newPixel]) => {
-        const pixelError = subtract(oldPixel, newPixel);
-        return add(acc, pixelError);
-      },
-      rgb(0, 0, 0),
+    const error = (zip(oldBlock.data, newData) as [Pixel, Pixel][]).map(
+      ([oldPixel, newPixel]) => subtract(oldPixel, newPixel),
     );
 
-    const errorDistance = magnitude(error);
+    const errorDistance = error
+      .map((errorPixel) => magnitude(errorPixel))
+      .reduce((a, b) => a + b, 0);
 
     if (errorDistance < smallestErrorDistance) {
       smallestErrorDistance = errorDistance;
@@ -64,34 +63,114 @@ const _dithering2x2Block = (
     }
   }
 
-  // distribute error
   distributeError(
     array,
     x + 1,
     y,
-    smallestError,
-    Array2D.new(2, 2, [21 / 128, 35 / 256, 21 / 256, 7 / 128]),
+    smallestError[0]!,
+    Array2D.new(2, 2, [1 / 8, 0, 5 / 32, 0]),
   );
   distributeError(
     array,
     x - 1,
     y + 1,
-    smallestError,
-    Array2D.new(2, 2, [9 / 128, 15 / 256, 9 / 256, 13 / 128]),
+    smallestError[0]!,
+    Array2D.new(2, 2, [0, 7 / 64, 0, 0]),
   );
   distributeError(
     array,
     x,
     y + 1,
-    smallestError,
-    Array2D.new(2, 2, [15 / 128, 25 / 256, 15 / 256, 5 / 128]),
+    smallestError[0]!,
+    Array2D.new(2, 2, [1 / 2, 13 / 64, 0, 0]),
   );
   distributeError(
     array,
     x + 1,
     y + 1,
-    smallestError,
-    Array2D.new(2, 2, [3 / 128, 5 / 256, 3 / 256, 1 / 128]),
+    smallestError[0]!,
+    Array2D.new(2, 2, [1 / 64, 0, 0, 0]),
+  );
+
+  distributeError(
+    array,
+    x + 1,
+    y,
+    smallestError[1]!,
+    Array2D.new(2, 2, [5 / 16, 0, 7 / 32, 0]),
+  );
+  distributeError(
+    array,
+    x - 1,
+    y + 1,
+    smallestError[1]!,
+    Array2D.new(2, 2, [0, 1 / 32, 0, 0]),
+  );
+  distributeError(
+    array,
+    x,
+    y + 1,
+    smallestError[1]!,
+    Array2D.new(2, 2, [11 / 64, 15 / 64, 0, 0]),
+  );
+  distributeError(
+    array,
+    x + 1,
+    y + 1,
+    smallestError[1]!,
+    Array2D.new(2, 2, [1 / 32, 0, 0, 0]),
+  );
+
+  distributeError(
+    array,
+    x + 1,
+    y,
+    smallestError[2]!,
+    Array2D.new(2, 2, [0, 0, 3 / 32, 0]),
+  );
+  distributeError(
+    array,
+    x - 1,
+    y + 1,
+    smallestError[2]!,
+    Array2D.new(2, 2, [0, 3 / 16, 0, 0]),
+  );
+  distributeError(
+    array,
+    x,
+    y + 1,
+    smallestError[2]!,
+    Array2D.new(2, 2, [1 / 2, 13 / 64, 0, 0]),
+  );
+  distributeError(
+    array,
+    x + 1,
+    y + 1,
+    smallestError[2]!,
+    Array2D.new(2, 2, [1 / 64, 0, 0, 0]),
+  );
+
+  distributeError(
+    array,
+    x + 1,
+    y,
+    smallestError[3]!,
+    Array2D.new(2, 2, [0, 0, 5 / 16, 0]),
+  );
+  // no x-1, y+1
+  distributeError(
+    array,
+    x,
+    y + 1,
+    smallestError[3]!,
+    Array2D.new(2, 2, [3 / 16, 7 / 16, 0, 0]),
+  );
+  distributeError(
+    array,
+    x + 1,
+    y + 1,
+    smallestError[3]!,
+    Array2D.new(2, 2, [1 / 16, 0, 0, 0]),
   );
 
   return newBlock;

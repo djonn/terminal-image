@@ -9,6 +9,14 @@ export const rgb = (r: number, g: number, b: number): Pixel => {
   return { r, g, b, a: 255 };
 };
 
+export const hex = (hex: `#${string}`): Pixel => {
+  const r = Number.parseInt(hex.slice(1, 3), 16);
+  const g = Number.parseInt(hex.slice(3, 5), 16);
+  const b = Number.parseInt(hex.slice(5, 7), 16);
+
+  return { r, g, b, a: 255 };
+};
+
 export const subtract = (a: Pixel, b: Pixel): Pixel => {
   return {
     r: a.r - b.r,
@@ -36,6 +44,10 @@ export const multiply = (pixel: Pixel, factor: number): Pixel => {
   };
 };
 
+export const isSameColor = (a: Pixel, b: Pixel): boolean => {
+  return a.r === b.r && a.g === b.g && a.b === b.b;
+};
+
 export const normalize = (pixel: Pixel): Pixel => {
   return Object.fromEntries(
     Object.entries(pixel).map(([key, value]) => [
@@ -45,15 +57,19 @@ export const normalize = (pixel: Pixel): Pixel => {
   ) as Pixel;
 };
 
+export const magnitude = ({ r, g, b }: Pixel): number => {
+  const redPart = r ** 2;
+  const greenPart = g ** 2;
+  const bluePart = b ** 2;
+
+  return Math.sqrt(redPart + greenPart + bluePart);
+};
+
+export const euclideanDistance = (a: Pixel, b: Pixel): number => {
+  return magnitude(subtract(a, b));
+};
+
 export const findClosestColor = (pixel: Pixel, palette: Pixel[]): Pixel => {
-  const euclideanDistance = (a: Pixel, b: Pixel) => {
-    const redPart = (a.r - b.r) ** 2;
-    const greenPart = (a.g - b.g) ** 2;
-    const bluePart = (a.b - b.b) ** 2;
-
-    return Math.sqrt(redPart + greenPart + bluePart);
-  };
-
   return palette
     .map((p): [Pixel, number] => [p, euclideanDistance(pixel, p)])
     .reduce(

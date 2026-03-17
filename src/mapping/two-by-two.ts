@@ -1,6 +1,7 @@
 import styles from "ansi-styles";
 import type Array2D from "../array2d";
-import type { Pixel } from "../pixel";
+import { uniqueBy } from "../arrayUtils";
+import { type Pixel, isSameColor } from "../pixel";
 
 export const bwTwoByTwo = (data: Array2D<Pixel>) => {
   const isWhite = ({ r, g, b }: Pixel) => r + g + b / 3 > 128;
@@ -18,6 +19,53 @@ export const bwTwoByTwo = (data: Array2D<Pixel>) => {
 
   // Uses a "Upper Half Block" character
   return `${styles.white.open}${styles.bgBlack.open}${char}${styles.reset.close}`;
+};
+
+export const colorTwoByTwo = (data: Array2D<Pixel>) => {
+  const colors = uniqueBy(
+    data.data,
+    (pixel) => `${pixel.r},${pixel.g},${pixel.b}`,
+  );
+
+  if (colors.length > 2) {
+    throw new Error(
+      `Expected at most 2 colors in a 2x2 block, but got ${colors.length}`,
+    );
+  }
+
+  if (colors.length === 1) {
+    // Both colors are the same, so just print a full block with that color
+    const fg = styles.color.ansi256(
+      // biome-ignore lint/style/noNonNullAssertion: reason
+      styles.rgbToAnsi256(colors[0]!.r, colors[0]!.g, colors[0]!.b),
+    );
+    return `${fg}█${styles.reset.close}`;
+  }
+
+  // there are 2 colors
+
+  // biome-ignore lint/style/noNonNullAssertion: reason
+  const ul = isSameColor(data.data[0]!, colors[0]!);
+  // biome-ignore lint/style/noNonNullAssertion: reason
+  const ur = isSameColor(data.data[1]!, colors[0]!);
+  // biome-ignore lint/style/noNonNullAssertion: reason
+  const ll = isSameColor(data.data[2]!, colors[0]!);
+  // biome-ignore lint/style/noNonNullAssertion: reason
+  const lr = isSameColor(data.data[3]!, colors[0]!);
+
+  const char = block(ul, ur, ll, lr);
+
+  const fg = styles.color.ansi256(
+    // biome-ignore lint/style/noNonNullAssertion: reason
+    styles.rgbToAnsi256(colors[0]!.r, colors[0]!.g, colors[0]!.b),
+  );
+
+  const bg = styles.bgColor.ansi256(
+    // biome-ignore lint/style/noNonNullAssertion: reason
+    styles.rgbToAnsi256(colors[1]!.r, colors[1]!.g, colors[1]!.b),
+  );
+
+  return `${fg}${bg}${char}${styles.reset.close}`;
 };
 
 const block = (ul: boolean, ur: boolean, ll: boolean, lr: boolean) => {

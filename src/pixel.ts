@@ -17,6 +17,14 @@ export const hex = (hex: `#${string}`): Pixel => {
   return { r, g, b, a: 255 };
 };
 
+export const toHexString = ({ r, g, b }: Pixel): `#${string}` => {
+  const rHex = r.toString(16).padStart(2, "0");
+  const gHex = g.toString(16).padStart(2, "0");
+  const bHex = b.toString(16).padStart(2, "0");
+
+  return `#${rHex}${gHex}${bHex}`;
+}
+
 export const subtract = (a: Pixel, b: Pixel): Pixel => {
   return {
     r: a.r - b.r,
